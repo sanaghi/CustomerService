@@ -1,8 +1,11 @@
 package az.lesson.spring.customerservice.service;
 
 
+import az.lesson.spring.customerservice.entity.Address;
 import az.lesson.spring.customerservice.entity.Customer;
+import az.lesson.spring.customerservice.repository.AddressRepository;
 import az.lesson.spring.customerservice.repository.CustomerRepository;
+import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -16,13 +19,16 @@ import java.util.Optional;
 
 @Service
 public class CustomerService {
+    EntityManager entityManager;
     private final CustomerRepository customerRepository;
+    private final AddressRepository addressRepository;
 
-    @Autowired
-    public CustomerService(CustomerRepository customerRepository) {
+    public CustomerService(CustomerRepository customerRepository, AddressRepository addressRepository) {
         this.customerRepository = customerRepository;
+        this.addressRepository = addressRepository;
     }
 
+    @Autowired
     public List<Customer> getAllCustomers() {
         return customerRepository.findAll();
     }
@@ -32,6 +38,11 @@ public class CustomerService {
     }
 
     public Customer createCustomer(Customer customer) {
+        Address address = new Address();
+        address.setCityId(1212);
+        Address address1 = addressRepository.save(address);
+
+//        customer.setAddress(address1);
         return customerRepository.save(customer);
     }
 
@@ -39,8 +50,8 @@ public class CustomerService {
         Optional<Customer> existingCustomer = customerRepository.findById(id);
         if (existingCustomer.isPresent()) {
             Customer customer = existingCustomer.get();
-            customer.setAddress(updatedCustomer.getAddress());
-            customer.setFinCode(updatedCustomer.getFinCode());
+//            customer.setAddress(updatedCustomer.getAddress());
+//            customer.setFinCode(updatedCustomer.getFinCode());
             customer.setType(updatedCustomer.getType());
             customer.setDebt(updatedCustomer.getDebt());
 
