@@ -1,7 +1,9 @@
 package az.lesson.spring.customerservice.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.Where;
 
 import java.util.Set;
 
@@ -19,10 +21,12 @@ public class Customer {
     @PrimaryKeyJoinColumn
     private  Person person;
 
+    @Where(clause = "customerType.")
     @ManyToOne
     @JoinColumn (name ="type_id",referencedColumnName = "id")
     private  CustomerType type;
 
+    @JsonIgnore
     private  double debt;
 
     @ManyToOne (cascade = CascadeType.ALL)

@@ -14,6 +14,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +30,7 @@ public class CustomerService {
         this.addressRepository = addressRepository;
     }
 
-    @Autowired
+
     public List<Customer> getAllCustomers() {
         return customerRepository.findAll();
     }
@@ -37,12 +39,15 @@ public class CustomerService {
         return customerRepository.findById(id);
     }
 
+    @Transactional
     public Customer createCustomer(Customer customer) {
-        Address address = new Address();
-        address.setCityId(1212);
-        Address address1 = addressRepository.save(address);
-
+//        Address address = new Address();
+//        address.setCityId(1212);
+//        Address address1 = addressRepository.save(address);
+//
+//
 //        customer.setAddress(address1);
+
         return customerRepository.save(customer);
     }
 
